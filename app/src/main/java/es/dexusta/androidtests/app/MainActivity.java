@@ -1,17 +1,18 @@
 package es.dexusta.androidtests.app;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends Activity implements OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements OnFragmentInteractionListener {
     private static final boolean DEBUG = true;
     private static final String TAG = "MainActivity";
 
@@ -32,7 +33,7 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
             mCurrentFragment = savedInstanceState.getInt(KEY_CURRENT_FRAGMENT, 1);
         }
 
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
         Fragment fragment;
@@ -87,8 +88,8 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
     @Override
     public void onFragmentInteraction(String command) {
         Log.d(TAG, "Command: " + command);
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
 
         if (command.equals("next")) {
            if (mCurrentFragment == 1) {
@@ -119,5 +120,19 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
             mCurrentFragment = 1;
         }
         transaction.commit();
+    }
+
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
+        private int mNumPages = 2;
+
+        @Override
+        public Fragment getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return mNumPages;
+        }
     }
 }
