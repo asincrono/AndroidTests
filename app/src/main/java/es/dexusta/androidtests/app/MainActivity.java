@@ -123,10 +123,20 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        private int mNumPages = 2;
+        private final int mNumPages;
+
+        private MyPagerAdapter(FragmentManager fm, int mNumPages) {
+            super(fm);
+            this.mNumPages = mNumPages;
+        }
 
         @Override
         public Fragment getItem(int position) {
+            if (position == 1) {
+                return FirstFragment.newInstance();
+            } else if (position == 2) {
+                return SecondFragment.newInstance();
+            }
             return null;
         }
 
