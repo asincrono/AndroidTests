@@ -1,12 +1,11 @@
 package es.dexusta.androidtests.app;
 
-import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,39 +23,23 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
 
     private int mCurrentFragment = 1;
 
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), 2));
 
         mCurrentFragment = 1;
         if (savedInstanceState != null) {
             mCurrentFragment = savedInstanceState.getInt(KEY_CURRENT_FRAGMENT, 1);
         }
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        Fragment fragment;
-
-        if (mCurrentFragment == 1) {
-            fragment = fm.findFragmentByTag(KEY_FIRST_FRAGMENT);
-            if (fragment == null) {
-                 fragment = FirstFragment.newInstance();
-                 transaction.add(android.R.id.content, fragment, KEY_FIRST_FRAGMENT);
-            } else {
-                transaction.replace(android.R.id.content, fragment);
-            }
-        } else if (mCurrentFragment == 2) {
-            fragment = fm.findFragmentByTag(KEY_SECOND_FRAGMENT);
-            if (fragment == null) {
-                fragment = SecondFragment.newInstance();
-                transaction.add(android.R.id.content, fragment, KEY_SECOND_FRAGMENT);
-            } else {
-                transaction.replace(android.R.id.content, fragment);
-            }
-        }
-
-        transaction.commit();
+        mViewPager.setCurrentItem(mCurrentFragment - 1);
     }
 
     @Override
@@ -86,40 +69,25 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
     }
 
     @Override
+    public void onBackPressed() {
+        if (mCurrentFragment == 1) {
+            super.onBackPressed();
+        } else {
+            --mCurrentFragment;
+            mViewPager.setCurrentItem(mCurrentFragment - 1, true);
+        }
+    }
+
+    @Override
     public void onFragmentInteraction(String command) {
         Log.d(TAG, "Command: " + command);
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-
-        if (command.equals("next")) {
-           if (mCurrentFragment == 1) {
-               if (DEBUG) {
-                   Log.d(TAG, "Current Fragment: " + mCurrentFragment);
-               }
-               transaction.setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_right);
-               Fragment fragment = manager.findFragmentByTag(KEY_SECOND_FRAGMENT);
-               if (fragment == null) {
-                   fragment = SecondFragment.newInstance();
-                   transaction.replace(android.R.id.content, fragment, KEY_SECOND_FRAGMENT);
-               } else {
-                   transaction.replace(R.id.content, fragment);
-               }
-
-               mCurrentFragment = 2;
-
-           }
-        } else if (command.equals("previous")) {
-            transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left);
-            Fragment fragment = manager.findFragmentByTag(KEY_FIRST_FRAGMENT);
-            if (fragment == null) {
-                fragment = FirstFragment.newInstance();
-                transaction.replace(android.R.id.content, fragment, KEY_FIRST_FRAGMENT);
-            } else {
-                transaction.replace(R.id.content, fragment);
-            }
-            mCurrentFragment = 1;
+        if (command == "next") {
+            ++mCurrentFragment;
+            mViewPager.setCurrentItem(mCurrentFragment - 1, true);
+        } else if (command == "previous") {
+            --mCurrentFragment;
+            mViewPager.setCurrentItem(mCurrentFragment - 1, true);
         }
-        transaction.commit();
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -132,9 +100,9 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 1) {
+            if (position == 0) {
                 return FirstFragment.newInstance();
-            } else if (position == 2) {
+            } else if (position == 1) {
                 return SecondFragment.newInstance();
             }
             return null;
