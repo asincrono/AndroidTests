@@ -15,7 +15,6 @@ public class FirstFragment extends Fragment {
     private static final String TAG = "FirstFragment";
     private OnFragmentInteractionListener mListener;
 
-    private Button mBttNext;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -91,17 +90,23 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         if (DEBUG)
             Log.d(TAG, "onCreateView.");
-        if (DEBUG)
-            Log.d(TAG, "onCreateView.");
         View view = inflater.inflate(R.layout.fragment_first, container, false);
-        mBttNext = (Button) view.findViewById(R.id.btt_next);
-        mBttNext.setOnClickListener(new View.OnClickListener() {
+        assert view != null;
+        Button bttNext = (Button) view.findViewById(R.id.btt_next);
+        bttNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickNext();
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (DEBUG)
+            Log.d(TAG, "onActivityCreated.");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -18,8 +18,6 @@ public class SecondFragment extends Fragment {
     private static final String TAG = "SecondFragment";
 
     private OnFragmentInteractionListener mListener;
-    private Button mButtonNext;
-    private Button mButtonPrevious;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -53,16 +51,16 @@ public class SecondFragment extends Fragment {
         if (DEBUG)
             Log.d(TAG, "onCreateView.");
         View view = inflater.inflate(R.layout.fragment_second, container, false);
-
-        mButtonPrevious = (Button) view.findViewById(R.id.btt_prev);
-        mButtonPrevious.setOnClickListener(new View.OnClickListener() {
+        assert view != null;
+        Button bttPrev = (Button) view.findViewById(R.id.btt_prev);
+        bttPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onFragmentInteraction("previous");
             }
         });
-        mButtonNext = (Button) view.findViewById(R.id.btt_next);
-        mButtonNext.setOnClickListener(new View.OnClickListener() {
+        Button bttNext = (Button) view.findViewById(R.id.btt_next);
+        bttNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onFragmentInteraction("next");
@@ -106,6 +104,14 @@ public class SecondFragment extends Fragment {
         super.onStop();
         if (DEBUG)
             Log.d(TAG, "onStop.");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (DEBUG)
+            Log.d(TAG, "onActivityCreated.");
+
     }
 
     @Override
