@@ -1,8 +1,10 @@
 package es.dexusta.androidtests.app;
 
+import android.animation.Animator;
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,10 @@ public class FirstFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private Button mBttNext;
+
+    public FirstFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -29,19 +35,64 @@ public class FirstFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public FirstFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (DEBUG)
+            Log.d(TAG, "onCreate.");
+    }
+
+    @Override
+    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        if (DEBUG)
+            Log.d(TAG, "onCreateAnimator (enter: " + enter + ")");
+        return super.onCreateAnimator(transit, enter, nextAnim);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (DEBUG)
+            Log.d(TAG, "onStart.");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (DEBUG)
+            Log.d(TAG, "onResume.");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (DEBUG)
+            Log.d(TAG, "onPause.");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (DEBUG)
+            Log.d(TAG, "onStop.");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (DEBUG)
+            Log.d(TAG, "onDestroy.");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if (DEBUG)
+            Log.d(TAG, "onCreateView.");
+        if (DEBUG)
+            Log.d(TAG, "onCreateView.");
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         mBttNext = (Button) view.findViewById(R.id.btt_next);
         mBttNext.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +114,8 @@ public class FirstFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        if (DEBUG)
+            Log.d(TAG, "onAttach.");
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
@@ -74,6 +127,8 @@ public class FirstFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        if (DEBUG)
+            Log.d(TAG, "onDetach.");
         mListener = null;
     }
 
