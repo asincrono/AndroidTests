@@ -1,6 +1,0 @@
-<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/linear_interpolator"
-    android:valueFrom="0"
-    android:valueTo="300"
-    android:propertyName="X"
-    android:duration="@android:integer/config_mediumAnimTime" />
