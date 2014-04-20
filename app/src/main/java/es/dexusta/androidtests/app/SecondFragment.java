@@ -51,7 +51,7 @@ public class SecondFragment extends Fragment {
         if (DEBUG)
             Log.d(TAG, "onCreateView.");
         View view = inflater.inflate(R.layout.fragment_second, container, false);
-        assert view != null;
+        if (view == null) throw new AssertionError("The inflated view can't be null.");
         Button bttPrev = (Button) view.findViewById(R.id.btt_prev);
         bttPrev.setOnClickListener(new View.OnClickListener() {
             @Override

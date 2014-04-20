@@ -91,7 +91,7 @@ public class FirstFragment extends Fragment {
         if (DEBUG)
             Log.d(TAG, "onCreateView.");
         View view = inflater.inflate(R.layout.fragment_first, container, false);
-        assert view != null;
+        if (view == null) throw new AssertionError();
         Button bttNext = (Button) view.findViewById(R.id.btt_next);
         bttNext.setOnClickListener(new View.OnClickListener() {
             @Override

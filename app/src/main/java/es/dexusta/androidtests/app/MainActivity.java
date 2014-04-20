@@ -1,5 +1,6 @@
 package es.dexusta.androidtests.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -7,7 +8,8 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity implements OnFragmentInteractionListener {
@@ -19,12 +21,17 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
     private static final String KEY_SECOND_FRAGMENT = "second frag";
     private static final String KEY_THRID_FRAGMENT = "thrid frag";
 
+    private ActionBar mAB;
+    private boolean mShowOptMenu = true;
+
 
     private int mCurrentFragment = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAB = getActionBar();
 
         mCurrentFragment = 1;
         if (savedInstanceState != null) {
@@ -64,26 +71,6 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onFragmentInteraction(String command) {
         Log.d(TAG, "Command: " + command);
         FragmentManager manager = getFragmentManager();
@@ -118,5 +105,27 @@ public class MainActivity extends Activity implements OnFragmentInteractionListe
             mCurrentFragment = 1;
         }
         transaction.commit();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!mShowOptMenu) {
+
+        }
+        return true;
+    }
+
+    public void onClickToggleBtt(View view) {
+        ToggleButton tggBtt = (ToggleButton) view;
+        if (tggBtt.isChecked()) {
+            mShowOptMenu = false;
+            ActionBarController.showCustomAB(getActionBar(), R.layout.actionbar_cancel_accept);
+        }
+        else {
+            mShowOptMenu = true;
+            ActionBarController.showClassicAB(getActionBar());
+            Log.d(TAG, "toggle button deactivated.");
+        }
+        invalidateOptionsMenu();
     }
 }
